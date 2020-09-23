@@ -1,0 +1,47 @@
+from random import shuffle, randrange
+w=int(input('Enter wigth maze:' ))
+h=int(input('Enter heigth maze:' ))
+vis=[]
+ver=[]
+hor=[]
+class door():
+    def __init__(self, x, y):
+        """ Создает двери из  начиная со случайного места лабиринта"""
+        vis[y][x] = 1
+        d = [(x - 1, y), (x, y + 1), (x + 1, y), (x, y - 1)]
+        shuffle(d)
+        for (xx, yy) in d:
+            if vis[yy][xx]: continue
+            if xx == x: hor[max(y, yy)][x] = "+  "
+            if yy == y: ver[y][max(x, xx)] = "   "
+            door(xx, yy)
+ 
+class wall():
+    def __init__(self):
+        """Создание вертикальных и горизонтальных стен по введенной длинне и ширине"""
+        for _ in range(h + 1):
+            hor.append(["+--"] * w + ['+'])
+        for _ in range(h):
+            ver.append(["|  "] * w + ['|'])
+        ver.append([])
+        
+ 
+class room():
+    
+    def __init__(self):
+        """Создание списка комнат по введенной длинне и ширине"""
+        for _ in range(h):
+            vis.append([0] * w + [1])
+        vis.append([1] * (w + 1))
+        
+class create_maze():
+
+    def __init__(self):
+        room()
+        wall()
+        door(randrange(w), randrange(h))
+        for (a, b) in zip(hor, ver):
+            print(''.join(a + ['\n'] + b))
+ 
+
+create_maze()
